@@ -1,5 +1,5 @@
 import React, { createContext } from "react"
-import { useSpekaerFilter } from "../src/hooks/useSpeakerFilter";
+import  useSpeakerFilter from "../hooks/useSpeakerFilter";
 
 
 const SpeakerFilterContext = createContext();
@@ -12,7 +12,7 @@ const SpeakerFilterProvider = ({ children, startShowSessions = false, startingEv
         setEventYear,
         searchQuery,
         setSearchQuery,
-        EVENT_YEARS, } = useSpekaerFilter(startShowSessions, startingEventYear);
+        EVENT_YEARS, } = useSpeakerFilter(startShowSessions, startingEventYear);
 
     return (
         <SpeakerFilterContext.Provider value={

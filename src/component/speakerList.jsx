@@ -1,13 +1,12 @@
 
-import { Speaker } from "./speaker";
-import { data } from "../../SpeakerData";
-import useRequestDelay, { REQUEST_STATUS } from "../hooks/useRequestDelay";
-import { SpeakerFilterContext } from "../../contexts/speakerFilterContext";
+import Speaker from "./speaker";
+import useRequestRest, { REQUEST_STATUS } from "../hooks/useRequestRest";
+import { SpeakerFilterContext } from "../contexts/speakerFilterContext";
 import { useContext } from "react";
 import { SpeakerAdd } from "./speakerAdd";
 // import SpeakerAdd from ""
 
-export const SpeakerList = () => {
+const SpeakerList = () => {
     const {
         data: speakersData,
         requestStatus,
@@ -15,8 +14,7 @@ export const SpeakerList = () => {
         updateRecord,
         insertRecord,
         deleteRecord
-    } = useRequestDelay(2000, data);
-    const { showSession } = useContext(SpeakerFilterContext);
+    } = useRequestRest();
     const { searchQuery, eventYear } = useContext(SpeakerFilterContext);
 
     if (requestStatus === REQUEST_STATUS.FAILURE) {
@@ -30,16 +28,11 @@ export const SpeakerList = () => {
     console.log(speakersData);
     console.log(requestStatus);
 
-
-
-    // if (isLoading === true) return <div>Loading...</div>
-
     return (
-
         <div className="container speakers-list">
             {
                 requestStatus === REQUEST_STATUS.LOADING ?
-                    <div>Loading...</div>
+                    (<div>Loading...</div>)
                     :
                     (
                         <div>
@@ -62,7 +55,6 @@ export const SpeakerList = () => {
                                             <Speaker
                                                 key={speaker.id}
                                                 speaker={speaker}
-                                                showSession={showSession}
                                                 updateRecord={updateRecord}
                                                 insertRecord={insertRecord}
                                                 deleteRecord={deleteRecord}
@@ -75,3 +67,5 @@ export const SpeakerList = () => {
         </div>
     )
 }
+
+export default SpeakerList;

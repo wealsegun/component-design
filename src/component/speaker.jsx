@@ -1,6 +1,6 @@
-import { useState, useContext } from "react"
-import { SpeakerFilterContext } from "../../contexts/speakerFilterContext";
-import { SpeakerProvider, SpeakerContext } from "../../contexts/speakerContext";
+import { useState, useContext, memo } from "react"
+import { SpeakerFilterContext } from "../contexts/speakerFilterContext";
+import { SpeakerProvider, SpeakerContext } from "../contexts/speakerContext";
 import { SpeakerDelete } from "./speakerDelete";
 
 export const Session = ({ title, room }) => {
@@ -17,7 +17,7 @@ export const Session = ({ title, room }) => {
 
 export const Sessions = () => {
     const { eventYear } = useContext(SpeakerFilterContext);
-    const { speaker } = useContext(SpeakerProvider);
+    const { speaker } = useContext(SpeakerContext);
     const sessions = speaker.sessions;
     return (
         <div className="sessionBox card h-250">
@@ -39,11 +39,22 @@ export const Sessions = () => {
     )
 }
 
+const ImageWithFallback = ({ src, ...props }) => {
+    const [error, setError] = useState(false);
+    const [imgSrc, setImgSrc] = useState(src);
+    const onError = () => {
+        if (!error) {
+            setImgSrc("/images/speaker-99999.jpg");
+        }
+    }
+    return <img src={imgSrc} {...props} onError={onError} />
+}
+
 export const SpeakerImage = () => {
     const { speaker: { id, first, last } } = useContext(SpeakerContext);
     return (
         <div className="speaker-img d-flex flex-row justify-content-center align-items-center h-300">
-            <img
+            <ImageWithFallback
                 className="contain-fit"
                 src={`/images/speaker-${id}.jpg`}
                 width="300"
@@ -118,12 +129,18 @@ export const SpeakerDemographics = () => {
     )
 }
 
-export const Speaker = ({ speaker, updateRecord, insertRecord, deleteRecord }) => {
+export const areEqualSpeaker = (prevProps, nextProps) => {
+    return prevProps.speaker.favorite === nextProps.speaker.favorite;
+}
+
+const Speaker = ({ speaker, updateRecord, insertRecord, deleteRecord }) => {
+
 
     const { showSession } = useContext(SpeakerFilterContext);
     return (
 
-        <SpeakerProvider speaker={speaker}
+        <SpeakerProvider
+            speaker={speaker}
             updateRecord={updateRecord}
             insertRecord={insertRecord}
             deleteRecord={deleteRecord}>
@@ -137,4 +154,6 @@ export const Speaker = ({ speaker, updateRecord, insertRecord, deleteRecord }) =
             </div>
         </SpeakerProvider>
     )
-}
+};
+
+export default Speaker;

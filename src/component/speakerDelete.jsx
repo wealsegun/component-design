@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { SpeakerContext } from "../../contexts/speakerContext";
+import { SpeakerContext } from "../contexts/speakerContext";
 
 
 export const SpeakerDelete = () => {

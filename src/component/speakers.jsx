@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { SpeakerList } from "./speakerList";
-import { SpeakerToolBar } from "./speakerToolBar"
-import { SpeakerFilterProvider } from "../../contexts/speakerFilterContext";
+import SpeakerList from "./speakerList";
+import SpeakerToolBar from "./speakerToolBar"
+import { SpeakerFilterProvider } from "../contexts/speakerFilterContext";
 
 export const Speakers = () => {
 

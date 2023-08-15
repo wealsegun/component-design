@@ -1,8 +1,8 @@
 import { useState, useContext } from "react";
-import { ThemeContext } from "../../contexts/themeContext";
-import { SpeakerFilterContext } from "../../contexts/speakerFilterContext";
+import { ThemeContext } from "../contexts/themeContext";
+import { SpeakerFilterContext } from "../contexts/speakerFilterContext";
 
-export const SpeakerToolBar = () => {
+const SpeakerToolBar = () => {
 
     const { theme, setTheme } = useContext(ThemeContext);
     const { showSession,
@@ -82,4 +82,5 @@ export const SpeakerToolBar = () => {
             </div>
         </section>
     )
-}
+};
+export default SpeakerToolBar;

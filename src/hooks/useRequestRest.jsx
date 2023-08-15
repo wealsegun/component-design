@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 export const REQUEST_STATUS = {
     LOADING: "loading",
     SUCCESS: "success",
     FAILURE: "failure",
 };
-const useRequestDelay = (delayTime, initialData = []) => {
+
+const restUrl = "api/speakers";
+const useRequestRest = () => {
+
     const [data, setData] = useState([]);
     const [requestStatus, setRequestStatus] = useState(REQUEST_STATUS.LOADING);
     const [error, setError] = useState("");
@@ -14,10 +18,10 @@ const useRequestDelay = (delayTime, initialData = []) => {
     useEffect(() => {
         const delayFunc = async () => {
             try {
-                await delay(delayTime);
+                const result = await axios.get(restUrl);
                 //throw "Had Error."
                 setRequestStatus(REQUEST_STATUS.SUCCESS);
-                setData(initialData);
+                setData(result.data);
             } catch (e) {
                 setRequestStatus(REQUEST_STATUS.FAILURE);
                 setError(e);
@@ -27,31 +31,15 @@ const useRequestDelay = (delayTime, initialData = []) => {
 
     }, []);
 
-
-    // const onFavoriteToggle = (id) => {
-    //     const speakersRecPrevious = speakersData.find(function (rec) {
-    //         return rec.id === id;
-    //     });
-    //     const speakerRecUpdated = {
-    //         ...speakersRecPrevious,
-    //         favorite: !speakersRecPrevious.favorite,
-    //     };
-    //     const speakersDataNew = speakersData.map(function (rec) {
-    //         return rec.id === id ? speakerRecUpdated : rec;
-    //     });
-
-    //     setSpeakersData(speakersDataNew);
-    // }
-
-    const updateRecord = (recordUpdated, doneCallBack) => {
+    const updateRecord = (record, doneCallBack) => {
         const origninalRecord = [...data];
         const newRecords = data.map((rec) => {
-            return rec.id === recordUpdated.id ? recordUpdated : rec;
+            return rec.id === record.id ? record : rec;
         });
         const delayFunction = async () => {
             setData(newRecords);
             try {
-                await delay(delayTime);
+                await axios.put(`${restUrl}/${record.id}`, record);
                 if (doneCallBack) {
                     doneCallBack();
                 }
@@ -74,7 +62,7 @@ const useRequestDelay = (delayTime, initialData = []) => {
             try {
                 setData(newRecords);
                 debugger;
-                await delay(delayTime);
+                await axios.post(`${restUrl}/9999`, record);
                 if (doneCallBack) {
                     doneCallBack();
                 }
@@ -97,7 +85,7 @@ const useRequestDelay = (delayTime, initialData = []) => {
         async function delayFunction() {
             try {
                 setData(newRecords);
-                await delay(delayTime);
+                await axios.delete(`${restUrl}/${record.id}`, record);
                 if (doneCallBack) {
                     doneCallBack();
                 }
@@ -119,8 +107,7 @@ const useRequestDelay = (delayTime, initialData = []) => {
         updateRecord,
         insertRecord,
         deleteRecord
-        // onFavoriteToggle,
     }
 }
 
-export default useRequestDelay;
+export default useRequestRest;

@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-export const useSpekaerFilter = (startShowSessions, startingEventYear) => {
+const useSpeakerFilter = (startShowSessions, startingEventYear) => {
     const [showSession, setShowSession] = useState(startShowSessions);
     const [eventYear, setEventYear] = useState(startingEventYear);
     const [searchQuery, setSearchQuery] = useState("");
@@ -31,3 +31,4 @@ export const useSpekaerFilter = (startShowSessions, startingEventYear) => {
         EVENT_YEARS,
     }
 }
+export default useSpeakerFilter;
