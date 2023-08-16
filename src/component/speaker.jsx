@@ -2,6 +2,7 @@ import { useState, useContext, memo } from "react"
 import { SpeakerFilterContext } from "../contexts/speakerFilterContext";
 import { SpeakerProvider, SpeakerContext } from "../contexts/speakerContext";
 import { SpeakerDelete } from "./speakerDelete";
+import ErrorBoundary from "./errorBoundary";
 
 export const Session = ({ title, room }) => {
     return (
@@ -129,11 +130,11 @@ export const SpeakerDemographics = () => {
     )
 }
 
-export const areEqualSpeaker = (prevProps, nextProps) => {
+const areEqualSpeaker = (prevProps, nextProps) => {
     return prevProps.speaker.favorite === nextProps.speaker.favorite;
 }
 
-const Speaker = ({ speaker, updateRecord, insertRecord, deleteRecord }) => {
+const SpeakerNoErrorBoundary = memo(() => ({ speaker, updateRecord, insertRecord, deleteRecord }) => {
 
 
     const { showSession } = useContext(SpeakerFilterContext);
@@ -154,6 +155,13 @@ const Speaker = ({ speaker, updateRecord, insertRecord, deleteRecord }) => {
             </div>
         </SpeakerProvider>
     )
-};
+}, areEqualSpeaker);
+
+const Speaker = (props) => {
+    <ErrorBoundary>
+        <SpeakerNoErrorBoundary {...props} >
+        </SpeakerNoErrorBoundary>
+    </ErrorBoundary>
+}
 
 export default Speaker;
